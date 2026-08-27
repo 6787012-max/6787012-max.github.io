@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>מרכז הגמ"חים · מעלה עמוס</title>
+<meta name="description" content="כל הגמ&quot;חים של מעלה עמוס במקום אחד — חיפוש, טלפונים, והוספה.">
+<meta name="theme-color" content="#12233F">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div class="offline" id="offline">אין חיבור — מוצגת הרשימה השמורה במכשיר</div>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <img src="img/logo-mark.svg" alt="">
+      <div>
+        <h1>מרכז הגמ"חים</h1>
+        <small>מעלה עמוס</small>
+      </div>
+      <div class="sp"></div>
+      <a class="phone-chip" id="lineLink" href="#">☎ בטלפון</a>
+    </div>
+
+    <div class="searchwrap">
+      <span class="ico">🔍</span>
+      <input id="q" type="search" inputmode="search" autocomplete="off"
+             placeholder="מה אתם מחפשים? למשל: בוסטר, סולם, תרופות…">
+      <button class="clearq" id="clearq" aria-label="נקה">✕</button>
+    </div>
+
+    <div class="chips" id="chips"></div>
+  </div>
+</header>
+
+<main>
+  <div class="bar">
+    <h2 id="listTitle">כל הגמ"חים</h2>
+    <span class="n" id="count"></span>
+    <span class="sp"></span>
+    <button class="linkbtn" id="resetBtn" hidden>נקה סינון</button>
+  </div>
+
+  <div class="grid" id="list">
+    <div class="skel"></div><div class="skel"></div>
+  </div>
+
+  <div id="wantedBlock" hidden>
+    <div class="bar" style="margin-top:30px">
+      <h2>גמ"חים שהיישוב צריך</h2>
+      <span class="n" id="wcount"></span>
+    </div>
+    <p style="margin:-6px 0 14px;color:var(--muted);font-size:14.5px">
+      אלה גמ"חים שעדיין אין להם מפעיל במעלה עמוס. יש לכם את הציוד? לחצו "אני מפעיל את זה".
+    </p>
+    <div class="grid" id="wlist"></div>
+  </div>
+</main>
+
+<button class="fab" id="addBtn">＋ הוספת גמ"ח</button>
+
+<footer>
+  מרכז הגמ"חים · מעלה עמוס<br>
+  גם בטלפון: <a id="lineFoot" href="#"></a> · גם בגוגל שיטס
+  <br><br>
+  <span style="font-size:12.5px">
+    הנתונים נמסרו ע"י התושבים. מצאתם טעות? בכל כרטיס יש כפתור "דיווח".
+  </span>
+</footer>
+
+<!-- ============ מודאל: הוספה / תיקון ============ -->
+<div class="ov" id="ov">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <h2 id="mTitle">הוספת גמ"ח</h2>
+    <p class="sub" id="mSub">הפרטים נשלחים לאישור, ומתפרסמים תוך יום-יומיים.</p>
+
+    <div class="msg" id="mMsg"></div>
+
+    <form id="mForm" autocomplete="off">
+      <input class="hp" id="hp" tabindex="-1" aria-hidden="true" placeholder="אל תמלאו">
+
+      <div id="fNew">
+        <div class="f">
+          <label for="fName">שם הגמ"ח *</label>
+          <input id="fName" required maxlength="80" placeholder="למשל: גמ&quot;ח כבלי הנעה">
+        </div>
+        <div class="f">
+          <label for="fCat">קטגוריה</label>
+          <select id="fCat"></select>
+        </div>
+        <div class="f">
+          <label for="fDesc">מה יש בגמ"ח</label>
+          <textarea id="fDesc" maxlength="400"
+            placeholder="כבלי הנעה ארוכים, מתאימים גם לרכב מסחרי"></textarea>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label for="fOwner">שם המשפחה</label>
+            <input id="fOwner" maxlength="60" placeholder="משפחת…">
+          </div>
+          <div class="f">
+            <label for="fAddr">כתובת ביישוב</label>
+            <input id="fAddr" maxlength="80" placeholder="רח' … 000/0">
+          </div>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label for="fPh1">טלפון *</label>
+            <input id="fPh1" type="tel" inputmode="tel" maxlength="15" placeholder="05x-xxxxxxx">
+          </div>
+          <div class="f">
+            <label for="fPh2">טלפון נוסף</label>
+            <input id="fPh2" type="tel" inputmode="tel" maxlength="15">
+          </div>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label for="fHours">שעות</label>
+            <input id="fHours" maxlength="60" placeholder="בכל שעה / בתיאום מראש">
+          </div>
+          <div class="f">
+            <label for="fPrice">עלות</label>
+            <input id="fPrice" maxlength="40" placeholder="ללא תשלום / פיקדון">
+          </div>
+        </div>
+      </div>
+
+      <div id="fFix" hidden>
+        <div class="f">
+          <label for="fWhat">מה צריך לתקן? *</label>
+          <textarea id="fWhat" maxlength="500"
+            placeholder="הטלפון התחלף ל־… / הגמ&quot;ח נסגר / עברו לכתובת אחרת"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="f">
+          <label for="fRep">השם שלכם</label>
+          <input id="fRep" maxlength="50">
+        </div>
+        <div class="f">
+          <label for="fRepPh">הטלפון שלכם</label>
+          <input id="fRepPh" type="tel" inputmode="tel" maxlength="15">
+          <div class="hint">רק כדי לחזור אליכם. לא מתפרסם.</div>
+        </div>
+      </div>
+
+      <div class="acts" style="margin-top:6px">
+        <button type="submit" class="btn pri" id="mSend">שליחה</button>
+        <button type="button" class="btn ghost" id="mCancel">ביטול</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ניהול · מרכז הגמ"חים</title>
+<meta name="theme-color" content="#12233F">
+<link rel="icon" href="img/icon-192.png">
+<link rel="stylesheet" href="css/main.css">
+<style>
+  .tabs{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;
+       font-weight:800;font-size:14.5px;cursor:pointer}
+  .tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .tab .b{background:var(--gold);color:#fff;border-radius:999px;padding:1px 7px;
+          font-size:12px;margin-inline-start:6px}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px;margin-top:8px}
+  .kv dt{font-weight:700;color:var(--muted)}
+  .kv dd{margin:0}
+  .login{max-width:380px;margin:60px auto;background:#fff;border:1px solid var(--line);
+         border-radius:var(--r);padding:26px 22px;box-shadow:var(--shadow)}
+  .tbl{width:100%;border-collapse:collapse;font-size:14px;background:#fff;
+       border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .tbl th,.tbl td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--line)}
+  .tbl th{background:var(--cream);font-size:13px;color:var(--muted)}
+  .tbl tr:last-child td{border-bottom:0}
+  .wrap{overflow-x:auto}
+  .stat{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .stat div{flex:1 1 130px;background:#fff;border:1px solid var(--line);border-radius:12px;
+            padding:12px 14px}
+  .stat b{display:block;font-size:26px;line-height:1.1}
+  .stat span{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <img src="img/logo-mark.svg" alt="">
+      <div><h1>ניהול המאגר</h1><small>מרכז הגמ"חים · מעלה עמוס</small></div>
+      <div class="sp"></div>
+      <button class="phone-chip" id="out" style="cursor:pointer" hidden>יציאה</button>
+    </div>
+    <div style="height:16px"></div>
+  </div>
+</header>
+
+<main>
+  <div class="login" id="login">
+    <h2 style="margin:0 0 4px">כניסת גבאי</h2>
+    <p class="sub" style="color:var(--muted);font-size:14px;margin:0 0 16px">
+      רק מי שמאשר גמ"חים חדשים.</p>
+    <div class="msg" id="lMsg"></div>
+    <form id="lForm">
+      <div class="f"><label for="lPh">טלפון</label>
+        <input id="lPh" type="tel" inputmode="tel" autocomplete="username" required></div>
+      <div class="f"><label for="lPw">סיסמה</label>
+        <input id="lPw" type="password" autocomplete="current-password" required></div>
+      <button class="btn pri" style="width:100%" type="submit">כניסה</button>
+    </form>
+  </div>
+
+  <div id="app" hidden>
+    <div class="stat" id="stat"></div>
+    <div class="tabs" id="tabs">
+      <button class="tab on" data-t="sugg">תור אישורים <span class="b" id="bSugg">0</span></button>
+      <button class="tab" data-t="list">כל הגמ"חים</button>
+      <button class="tab" data-t="search">מה חיפשו</button>
+      <button class="tab" data-t="export">ייצוא</button>
+    </div>
+    <div id="pane"></div>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
