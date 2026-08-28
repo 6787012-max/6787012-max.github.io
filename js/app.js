@@ -9,7 +9,8 @@
     'Content-Type': 'application/json'
   };
 
-  var S = { all: [], cats: [], cat: null, q: '', mode: 'new', target: null };
+  var S = { all: [], cats: [], cat: null, q: '', mode: 'new', target: null,
+            wantedName: null };
 
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) {
@@ -190,7 +191,7 @@
   /* ---------------- מודאל ---------------- */
   function openModal(mode, opts) {
     opts = opts || {};
-    S.mode = mode; S.target = opts.code || null;
+    S.mode = mode; S.target = opts.code || null; S.wantedName = null;
     $('mMsg').className = 'msg';
     $('fNew').hidden = mode === 'fix';
     $('fFix').hidden = mode !== 'fix';
@@ -203,6 +204,7 @@
       $('mTitle').textContent = 'אני מפעיל את זה';
       $('mSub').textContent = 'מעולה. מלאו את הפרטים והגמ"ח יעלה לאוויר.';
       $('fName').value = opts.name || '';
+      S.wantedName = opts.name || null;   // כדי שהאישור יפעיל ולא ישכפל
       if (opts.cat) $('fCat').value = opts.cat;
     } else {
       $('mTitle').textContent = 'הוספת גמ"ח';
@@ -237,6 +239,7 @@
         address: $('fAddr').value.trim(), phone1: ph, phone2: $('fPh2').value.trim(),
         hours: $('fHours').value.trim(), price: $('fPrice').value.trim()
       };
+      if (S.wantedName) payload.activates_wanted = S.wantedName;
     }
 
     $('mSend').disabled = true;

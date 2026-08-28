@@ -98,8 +98,10 @@
     $('pane').innerHTML = '<div class="grid">' + rows.map(function (s) {
       var p = s.payload || {};
       var kinds = { 'new': 'גמ"ח חדש', fix: 'תיקון', remove: 'בקשת הסרה' };
+      if (s.kind === 'new' && p.activates_wanted) kinds['new'] = 'מפעיל גמ"ח מבוקש';
+      var HIDE = { activates_wanted: 1 };      // שדות פנימיים
       var kv = Object.keys(p).map(function (k) {
-        if (!p[k]) return '';
+        if (!p[k] || HIDE[k]) return '';
         var v = k === 'category' ? catName(p[k]) : p[k];
         return '<dt>' + esc(labelOf(k)) + '</dt><dd>' + esc(v) + '</dd>';
       }).join('');
@@ -204,17 +206,33 @@
     var s = DATA.sugg.filter(function (x) { return x.id === +id; })[0];
     if (!s) return;
     var p = s.payload || {};
-    api('gmachim', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: p.name, category: p.category || null, description: p.description || '',
-        owner_name: p.owner_name || '', phone1: p.phone1 || '', phone2: p.phone2 || '',
-        address: p.address || '', hours: p.hours || '', price: p.price || '',
-        status: 'approved', is_wanted: false, source: s.source,
-        verified_at: new Date().toISOString().slice(0, 10)
-      })
-    }).then(function () { return mark(id, 'done', 'אושר ופורסם'); })
-      .then(load)
+    var body = {
+      name: p.name, category: p.category || null, description: p.description || '',
+      owner_name: p.owner_name || '', phone1: p.phone1 || '', phone2: p.phone2 || '',
+      address: p.address || '', hours: p.hours || '', price: p.price || '',
+      status: 'approved', is_wanted: false, source: s.source,
+      verified_at: new Date().toISOString().slice(0, 10)
+    };
+
+    // אם ההצעה מפעילה גמ"ח שהיה "מבוקש" — לעדכן אותו, לא ליצור כפילות.
+    // מזהים לפי activates_wanted מהאתר, או לפי שם זהה לרשומה מבוקשת.
+    var target = DATA.gm.filter(function (g) {
+      return g.is_wanted &&
+        (g.name === p.activates_wanted || g.name === p.name);
+    })[0];
+
+    var call = target
+      ? api('gmachim?id=eq.' + target.id, {
+          method: 'PATCH',
+          body: JSON.stringify(body)
+        }).then(function (r) {
+          if (!r || !r.length) throw new Error('לא עודכנה שורה — בדוק הרשאות');
+        })
+      : api('gmachim', { method: 'POST', body: JSON.stringify(body) });
+
+    call.then(function () {
+      return mark(id, 'done', target ? 'הפעיל גמ"ח מבוקש' : 'אושר ופורסם');
+    }).then(load)
       .catch(function (e) { alert('שגיאה: ' + e.message); });
   }
 
