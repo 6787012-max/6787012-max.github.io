@@ -258,16 +258,16 @@ main{max-width:var(--max);margin:0 auto;padding:24px 18px 120px}
 
 /* ---------- כפתור צף + מודאל ---------- */
 .fab{
-  position:fixed;inset-block-end:22px;inset-inline-start:50%;
-  transform:translateX(50%);
+  position:fixed;bottom:22px;left:50%;
+  transform:translateX(-50%);
   background:linear-gradient(180deg,var(--navy-700),var(--navy-900));
   color:#fff;border:1px solid rgba(203,167,92,.35);border-radius:var(--r-full);
   padding:15px 27px;font-weight:800;font-size:var(--t-lg);cursor:pointer;
   z-index:50;box-shadow:var(--sh-3);display:flex;align-items:center;gap:9px;
   transition:.2s var(--ease);-webkit-tap-highlight-color:transparent;
 }
-.fab:hover{transform:translateX(50%) translateY(-2px)}
-.fab:active{transform:translateX(50%) scale(.97)}
+.fab:hover{transform:translateX(-50%) translateY(-2px)}
+.fab:active{transform:translateX(-50%) scale(.97)}
 
 .ov{position:fixed;inset:0;background:rgba(10,23,41,.62);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
@@ -316,6 +316,7 @@ footer{
 footer a{color:var(--ink-2);font-weight:800;text-decoration:none;
   border-bottom:1.5px solid var(--gold-400)}
 footer a:hover{color:var(--accent)}
+.foot-row a:empty{display:none}
 .foot-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
   margin:14px 0 18px}
 
