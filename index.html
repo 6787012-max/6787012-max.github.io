@@ -11,6 +11,7 @@
 <link rel="icon" href="img/icon-192.png">
 <link rel="apple-touch-icon" href="img/icon-192.png">
 <link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/palettes.css">
 </head>
 <body>
 
@@ -25,7 +26,9 @@
         <small>מעלה עמוס</small>
       </div>
       <div class="sp"></div>
-      <a class="phone-chip" id="lineLink" href="#">☎ בטלפון</a>
+      <button class="hbtn icon" id="themeBtn" title="מצב כהה / בהיר"
+              aria-label="החלפת מצב תצוגה">🌙</button>
+      <a class="hbtn" id="lineLink" href="#">☎ בטלפון</a>
     </div>
 
     <div class="searchwrap">
@@ -40,10 +43,16 @@
 </header>
 
 <main>
+  <div class="print-head">
+    <h1>מרכז הגמ"חים · מעלה עמוס</h1>
+    <p id="printSub"></p>
+  </div>
+
   <div class="bar">
     <h2 id="listTitle">כל הגמ"חים</h2>
     <span class="n" id="count"></span>
     <span class="sp"></span>
+    <button class="linkbtn" id="printBtn">הורדה / הדפסה</button>
     <button class="linkbtn" id="resetBtn" hidden>נקה סינון</button>
   </div>
 
@@ -56,7 +65,7 @@
       <h2>גמ"חים שהיישוב צריך</h2>
       <span class="n" id="wcount"></span>
     </div>
-    <p style="margin:-6px 0 14px;color:var(--muted);font-size:14.5px">
+    <p style="margin:-6px 0 14px;color:var(--ink-3);font-size:var(--t-md)">
       אלה גמ"חים שעדיין אין להם מפעיל במעלה עמוס. יש לכם את הציוד? לחצו "אני מפעיל את זה".
     </p>
     <div class="grid" id="wlist"></div>
@@ -66,10 +75,13 @@
 <button class="fab" id="addBtn">＋ הוספת גמ"ח</button>
 
 <footer>
-  מרכז הגמ"חים · מעלה עמוס<br>
-  גם בטלפון: <a id="lineFoot" href="#"></a> · גם בגוגל שיטס
-  <br><br>
-  <span style="font-size:12.5px">
+  <strong style="color:var(--ink-2);font-size:var(--t-lg)">מרכז הגמ"חים · מעלה עמוס</strong>
+  <div class="foot-row">
+    <a id="lineFoot" href="#"></a>
+    <span>·</span>
+    <button class="linkbtn" id="printBtn2">הורדה / הדפסה</button>
+  </div>
+  <span style="font-size:var(--t-xs);display:block;max-width:52ch;margin:0 auto">
     הנתונים נמסרו ע"י התושבים. מצאתם טעות? בכל כרטיס יש כפתור "דיווח".
   </span>
 </footer>

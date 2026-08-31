@@ -1,0 +1,75 @@
+/* ============================================================
+   פלטות חלופיות — להחלפה ע"י data-palette על <html>
+   כל פלטה דורסת רק את הטוקנים הסמנטיים. המבנה נשאר זהה.
+   ברירת מחדל (בלי data-palette) = "מותג" — נייבי וזהב של מעלה עמוס.
+   ============================================================ */
+
+/* ---------- ב · אבן וטרקוטה (Warm Stone) ---------- */
+:root[data-palette="stone"]{
+  --navy-900:#2B211C; --navy-800:#3A2C25; --navy-700:#4C3A31; --navy-600:#634C40;
+  --gold-600:#A9502F; --gold-500:#C2643E; --gold-400:#D98A63; --gold-300:#E9AE8C;
+  --cream:#FAF5EE;
+  --bg:#F6F1E9; --bg-2:#EFE7DB; --surface:#FFFDFA; --surface-2:#FAF4EC;
+  --ink:#241B16; --ink-2:#57473E; --ink-3:#8A7668;
+  --line:#E5D9CA; --line-2:#F1E9DD;
+  --wa:#0F8A7C;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="stone"]:not([data-theme="light"]){
+    --bg:#1A1310; --bg-2:#211815; --surface:#2A201B; --surface-2:#33261F;
+    --ink:#F6EEE7; --ink-2:#D3C0B3; --ink-3:#A28D7E;
+    --line:#4A382E; --line-2:#3A2C25; --cream:#2A201B;
+  }
+}
+:root[data-palette="stone"][data-theme="dark"]{
+  --bg:#1A1310; --bg-2:#211815; --surface:#2A201B; --surface-2:#33261F;
+  --ink:#F6EEE7; --ink-2:#D3C0B3; --ink-3:#A28D7E;
+  --line:#4A382E; --line-2:#3A2C25; --cream:#2A201B;
+}
+
+/* ---------- ג · ירוק-אורן וענבר (Pine & Amber) ---------- */
+:root[data-palette="pine"]{
+  --navy-900:#0C221C; --navy-800:#123328; --navy-700:#1B4A3A; --navy-600:#26654E;
+  --gold-600:#A5711A; --gold-500:#C68C28;
+  --gold-400:#DFAA47; --gold-300:#EDC777;
+  --cream:#F4F7F2;
+  --bg:#F1F5F0; --bg-2:#E6EDE4; --surface:#FFFFFF; --surface-2:#F7FAF6;
+  --ink:#0E2019; --ink-2:#3C5449; --ink-3:#6E8579;
+  --line:#D8E3D6; --line-2:#EAF1E8;
+  --wa:#0F8A7C;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="pine"]:not([data-theme="light"]){
+    --bg:#08150F; --bg-2:#0C1E16; --surface:#112A20; --surface-2:#153327;
+    --ink:#EAF4EE; --ink-2:#AFC9BB; --ink-3:#7E9A8B;
+    --line:#1F4936; --line-2:#173628; --cream:#112A20;
+  }
+}
+:root[data-palette="pine"][data-theme="dark"]{
+  --bg:#08150F; --bg-2:#0C1E16; --surface:#112A20; --surface-2:#153327;
+  --ink:#EAF4EE; --ink-2:#AFC9BB; --ink-3:#7E9A8B;
+  --line:#1F4936; --line-2:#173628; --cream:#112A20;
+}
+
+/* ---------- ד · פחם ותכלת (Graphite & Sky) ---------- */
+:root[data-palette="graphite"]{
+  --navy-900:#14181D; --navy-800:#1E242C; --navy-700:#2C353F; --navy-600:#3E4A57;
+  --gold-600:#1E6F9E; --gold-500:#2A87BC; --gold-400:#4EA6D6; --gold-300:#8ACAE8;
+  --cream:#F4F6F8;
+  --bg:#F2F4F6; --bg-2:#E7EBEF; --surface:#FFFFFF; --surface-2:#F8FAFB;
+  --ink:#10161C; --ink-2:#3F4B57; --ink-3:#6E7C8A;
+  --line:#DDE3E9; --line-2:#EDF1F4;
+  --wa:#0F8A7C;
+}
+@media (prefers-color-scheme: dark){
+  :root[data-palette="graphite"]:not([data-theme="light"]){
+    --bg:#0B0E12; --bg-2:#11151A; --surface:#171D24; --surface-2:#1D242D;
+    --ink:#EDF2F7; --ink-2:#B4C0CC; --ink-3:#8494A3;
+    --line:#2A343F; --line-2:#1F272F; --cream:#171D24;
+  }
+}
+:root[data-palette="graphite"][data-theme="dark"]{
+  --bg:#0B0E12; --bg-2:#11151A; --surface:#171D24; --surface-2:#1D242D;
+  --ink:#EDF2F7; --ink-2:#B4C0CC; --ink-3:#8494A3;
+  --line:#2A343F; --line-2:#1F272F; --cream:#171D24;
+}

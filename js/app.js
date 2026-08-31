@@ -308,6 +308,43 @@
     }, 120);
   }
 
+  /* ---------------- מצב תצוגה + הדפסה ---------------- */
+  function theme() {
+    var saved = null;
+    try { saved = localStorage.getItem('gm_theme'); } catch (e) {}
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    paintThemeBtn();
+
+    $('themeBtn').addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme');
+      if (!cur) {
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark' : 'light';
+      }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('gm_theme', next); } catch (e) {}
+      paintThemeBtn();
+    });
+  }
+
+  function paintThemeBtn() {
+    var t = document.documentElement.getAttribute('data-theme');
+    var dark = t === 'dark' ||
+      (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    $('themeBtn').textContent = dark ? '☀' : '🌙';
+    var m = document.querySelector('meta[name=theme-color]');
+    if (m) m.content = dark ? '#0A1729' : '#12233F';
+  }
+
+  function print_() {
+    var n = S.all.filter(function (g) { return !g.is_wanted; }).length;
+    $('printSub').textContent =
+      n + ' גמ"חים · ' + new Date().toLocaleDateString('he-IL') +
+      ' · ' + CFG.line + ' שלוחה ' + CFG.ext;
+    window.print();
+  }
+
   // deep-link: index.html?q=בוסטר  או  ?c=rechev  או  #101
   function fromUrl() {
     var p = new URLSearchParams(location.search);
@@ -315,7 +352,9 @@
     if (p.get('c')) S.cat = p.get('c');
   }
 
-  wire(); fromUrl(); boot();
+  wire(); theme(); fromUrl(); boot();
+  $('printBtn').addEventListener('click', print_);
+  var p2 = $('printBtn2'); if (p2) p2.addEventListener('click', print_);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
