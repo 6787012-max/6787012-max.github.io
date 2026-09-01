@@ -1,4 +1,4 @@
-/* מרכז הגמ"חים — מעלה עמוס. אין תלויות, אין build. */
+/* מרכז הגמ"ח — מעלה עמוס. אין תלויות, אין build. */
 (function () {
   'use strict';
 
@@ -38,7 +38,7 @@
     var d = String(p).replace(/\D/g, '');
     if (d.charAt(0) === '0') d = '972' + d.slice(1);
     return 'https://wa.me/' + d + '?text=' +
-      encodeURIComponent('שלום, פניתי דרך מרכז הגמ"חים של מעלה עמוס בנוגע ל' + name + '.');
+      encodeURIComponent('שלום, פניתי דרך מרכז הגמ"ח של מעלה עמוס בנוגע ל' + name + '.');
   }
   function prettyPhone(p) {
     var d = String(p).replace(/\D/g, '');

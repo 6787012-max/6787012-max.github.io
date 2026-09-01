@@ -87,6 +87,9 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 .brand{display:flex;align-items:center;gap:13px}
 .brand img{height:54px;width:auto;display:block;
   filter:drop-shadow(0 4px 14px rgba(0,0,0,.35))}
+.brand img.wide{height:72px;margin:-8px 0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap}
 .brand h1{
   font-size:var(--t-2xl); margin:0; font-weight:800;
   letter-spacing:-.022em; line-height:1.05; color:#F7F3E9;
@@ -111,6 +114,7 @@ button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit
 @media(max-width:430px){
   .brand{gap:9px}
   .brand img{height:46px}
+  .brand img.wide{height:58px;margin:-6px 0}
   .hbtn{padding:8px 10px;font-size:var(--t-xs)}
   .hbtn .lbl{display:none}
   .hbtn.sos{padding:8px 12px}
