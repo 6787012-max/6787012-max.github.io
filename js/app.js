@@ -10,7 +10,7 @@
   };
 
   var S = { all: [], cats: [], cat: null, q: '', mode: 'new', target: null,
-            wantedName: null };
+            wantedName: null, sos: [] };
 
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) {
@@ -145,9 +145,10 @@
 
     Promise.all([
       api('gmach_categories?select=*&order=sort'),
-      api('gmach_public?select=*')
+      api('gmach_public?select=*'),
+      api('gmach_emergency?select=*&order=sort')
     ]).then(function (r) {
-      S.cats = r[0]; S.all = prep(r[1]);
+      S.cats = r[0]; S.all = prep(r[1]); S.sos = r[2] || [];
       cache(r);
       drawChips(); render();
     }).catch(function () {
@@ -155,7 +156,7 @@
       if (c) {
         try {
           var d = JSON.parse(c);
-          S.cats = d[0]; S.all = prep(d[1]);
+          S.cats = d[0]; S.all = prep(d[1]); S.sos = d[2] || [];
           $('offline').style.display = 'block';
           drawChips(); render();
           return;
@@ -289,14 +290,17 @@
     $('mForm').addEventListener('submit', submit);
     $('ov').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') { closeModal(); $('sosOv').classList.remove('on'); }
     });
     document.addEventListener('click', function (e) {
       var f = e.target.closest('.js-fix');
       if (f) return openModal('fix', { code: +f.dataset.code, name: f.dataset.name });
       var i = e.target.closest('.js-iam');
       if (i) return openModal('iam', { name: i.dataset.name, cat: i.dataset.cat });
-      if (e.target.closest('.js-open-new')) return openModal('new');
+      if (e.target.closest('.js-open-new')) {
+        $('sosOv').classList.remove('on');
+        return openModal('new');
+      }
     });
     // מילוי הקטגוריות בטופס אחרי הטעינה
     var iv = setInterval(function () {
@@ -306,6 +310,60 @@
         return '<option value="' + esc(c.key) + '">' + esc(c.name) + '</option>';
       }).join('');
     }, 120);
+  }
+
+  /* ---------------- חירום ---------------- */
+  function sosRow(name, phone, note, big) {
+    var d = String(phone).replace(/\D/g, '');
+    return '<a class="sos-item' + (big ? ' big' : '') + '" href="' +
+      telHref(phone) + '">' +
+      '<span class="num' + (d.length > 4 ? ' sml' : '') + '">' +
+      esc(d.length > 4 ? prettyPhone(phone) : phone) + '</span>' +
+      '<span class="txt"><b>' + esc(name) + '</b>' +
+      (note ? '<span>' + esc(note) + '</span>' : '') + '</span></a>';
+  }
+
+  function drawSos() {
+    var nat = S.sos.filter(function (x) { return x.kind === 'national'; });
+    var loc = S.sos.filter(function (x) { return x.kind !== 'national'; });
+    var urgent = S.all.filter(function (g) { return g.is_urgent && !g.is_wanted; });
+    var missing = S.all.filter(function (g) { return g.is_urgent && g.is_wanted; });
+
+    var h = [];
+    if (nat.length) {
+      h.push('<div class="sos-grp"><h3>חירום ארצי</h3><div class="sos-list">' +
+        nat.map(function (x) { return sosRow(x.name, x.phone, x.note, true); })
+          .join('') + '</div></div>');
+    }
+    if (loc.length) {
+      h.push('<div class="sos-grp"><h3>ביישוב</h3><div class="sos-list">' +
+        loc.map(function (x) { return sosRow(x.name, x.phone, x.note); })
+          .join('') + '</div></div>');
+    }
+    if (urgent.length) {
+      h.push('<div class="sos-grp"><h3>גמ"חים לתקלות דחופות</h3>' +
+        '<div class="sos-list">' + urgent.map(function (g) {
+          return g.phone1
+            ? sosRow(g.name.replace(/^גמ"ח /, ''), g.phone1,
+                     [g.owner_name, g.hours].filter(Boolean).join(' · '))
+            : '';
+        }).join('') + '</div></div>');
+    }
+    if (missing.length) {
+      h.push('<div class="sos-grp"><h3>אין עדיין ביישוב</h3>' +
+        '<p style="font-size:var(--t-sm);color:var(--ink-3);margin:0 0 9px">' +
+        'אלה דברים שנחוצים בחירום ואין להם מפעיל. יש לכם? ' +
+        '<button class="linkbtn js-open-new">הוסיפו</button>.</p>' +
+        '<div class="sos-list">' + missing.map(function (g) {
+          return '<div class="sos-item" style="opacity:.72;cursor:default">' +
+            '<span class="num sml" style="color:var(--ink-3)">—</span>' +
+            '<span class="txt"><b>' + esc(g.name.replace(/^גמ"ח /, '')) +
+            '</b><span>חסר ביישוב</span></span></div>';
+        }).join('') + '</div></div>');
+    }
+    $('sosBody').innerHTML = h.join('') ||
+      '<div class="empty"><b>לא נטענו מספרי חירום</b>' +
+      'אפשר תמיד לחייג 101, או ' + CFG.line + ' שלוחה ' + CFG.ext + '.</div>';
   }
 
   /* ---------------- מצב תצוגה + הדפסה ---------------- */
@@ -354,6 +412,15 @@
 
   wire(); theme(); fromUrl(); boot();
   $('printBtn').addEventListener('click', print_);
+  $('sosBtn').addEventListener('click', function () {
+    drawSos(); $('sosOv').classList.add('on');
+  });
+  $('sosClose').addEventListener('click', function () {
+    $('sosOv').classList.remove('on');
+  });
+  $('sosOv').addEventListener('click', function (e) {
+    if (e.target === this) this.classList.remove('on');
+  });
   var p2 = $('printBtn2'); if (p2) p2.addEventListener('click', print_);
 
   if ('serviceWorker' in navigator) {
