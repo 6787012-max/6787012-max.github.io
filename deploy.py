@@ -9,7 +9,9 @@
 אצל אנשים אחרים. לכן master נשאר נקי, וה-CNAME מוזרק כ-commit נפרד רק
 לצד של gmachim — בלי checkout, דרך plumbing.
 """
-import os, re, subprocess, sys
+import io, os, re, subprocess, sys
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DOMAIN = "gmachim.mokad.co.il"
