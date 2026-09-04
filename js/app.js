@@ -12,6 +12,10 @@
   var S = { all: [], cats: [], cat: null, q: '', mode: 'new', target: null,
             wantedName: null, sos: [] };
 
+  var phoneText = function () {
+    return CFG.ext ? (CFG.line + ' שלוחה ' + CFG.ext) : CFG.line;
+  };
+
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -141,7 +145,7 @@
     var line = 'tel:' + CFG.line;
     $('lineLink').href = line;
     $('lineFoot').href = line;
-    $('lineFoot').textContent = CFG.line + ' שלוחה ' + CFG.ext;
+    $('lineFoot').textContent = phoneText();
 
     Promise.all([
       api('gmach_categories?select=*&order=sort'),
@@ -164,7 +168,7 @@
       }
       $('list').innerHTML = '<div class="empty"><b>לא הצלחנו לטעון את הרשימה</b>' +
         'בדקו חיבור לאינטרנט ונסו לרענן. בינתיים אפשר תמיד להתקשר: ' +
-        CFG.line + ' שלוחה ' + CFG.ext + '.</div>';
+        phoneText() + '.</div>';
     });
   }
 
@@ -256,8 +260,7 @@
       $('mForm').reset();
       setTimeout(closeModal, 2200);
     }).catch(function () {
-      say('השליחה נכשלה. אפשר גם להשאיר הודעה בקו: ' + CFG.line +
-          ' שלוחה ' + CFG.ext + '.', 'err');
+      say('השליחה נכשלה. אפשר גם להשאיר הודעה בקו: ' + phoneText() + '.', 'err');
     }).then(function () { $('mSend').disabled = false; });
   }
 
@@ -363,7 +366,7 @@
     }
     $('sosBody').innerHTML = h.join('') ||
       '<div class="empty"><b>לא נטענו מספרי חירום</b>' +
-      'אפשר תמיד לחייג 101, או ' + CFG.line + ' שלוחה ' + CFG.ext + '.</div>';
+      'אפשר תמיד לחייג 101, או ' + phoneText() + '.</div>';
   }
 
   /* ---------------- מצב תצוגה + הדפסה ---------------- */
@@ -399,7 +402,7 @@
     var n = S.all.filter(function (g) { return !g.is_wanted; }).length;
     $('printSub').textContent =
       n + ' גמ"חים · ' + new Date().toLocaleDateString('he-IL') +
-      ' · ' + CFG.line + ' שלוחה ' + CFG.ext;
+      ' · ' + phoneText();
     window.print();
   }
 
