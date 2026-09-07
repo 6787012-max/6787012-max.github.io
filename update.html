@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>עדכון גמ"ח · מעלה עמוס</title>
+<meta name="description" content='עדכון הרשימה של מרכז הגמ"ח במעלה עמוס: הוספה, תיקון פרטים, דיווח.'>
+<meta name="theme-color" content="#12233F">
+<link rel="icon" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/icon-192.png">
+<style>
+:root{
+  --navy-900:#0A1729; --navy-800:#12233F; --navy-700:#1B3358;
+  --gold-500:#B08D3E; --gold-400:#CBA75C;
+  --cream:#F7F3E9; --paper:#FFFFFF;
+  --bg:#F4F0E6; --surface:#FFFFFF; --ink:#0E1D33; --ink-2:#3D4F6B; --ink-3:#6B7A91;
+  --line:#E4DCC9; --ok:#15704A; --bad:#9B2C2C;
+  --r:16px;
+  --sh:0 2px 6px rgba(14,29,51,.06), 0 12px 32px rgba(14,29,51,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Assistant','Segoe UI',system-ui,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); direction:rtl;
+  -webkit-font-smoothing:antialiased; line-height:1.55;
+}
+.top{
+  background:linear-gradient(180deg,var(--navy-800),var(--navy-900));
+  color:#fff; padding:22px 20px 26px; text-align:center;
+}
+.top img{height:52px; margin-bottom:8px}
+.top h1{margin:6px 0 4px; font-size:22px; letter-spacing:.2px}
+.top p{margin:0; color:#D9BE7C; font-size:14.5px}
+main{max-width:640px; margin:0 auto; padding:18px 16px 60px}
+.tabs{display:flex; gap:8px; margin:8px 0 16px}
+.tab{
+  flex:1; border:1px solid var(--line); background:#fff;
+  border-radius:999px; padding:11px 8px; font-weight:800; font-size:14.5px;
+  cursor:pointer; color:var(--ink-2); text-align:center; transition:.15s
+}
+.tab.on{background:var(--navy-800); color:#fff; border-color:var(--navy-800)}
+.card{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); padding:20px 18px; box-shadow:var(--sh);
+}
+.card h2{margin:0 0 4px; font-size:19px}
+.card .sub{margin:0 0 14px; color:var(--ink-3); font-size:14px}
+.f{margin-bottom:12px}
+.f label{display:block; font-weight:700; font-size:14px; margin-bottom:5px; color:var(--ink-2)}
+.f input, .f select, .f textarea{
+  width:100%; border:1px solid var(--line); border-radius:10px;
+  padding:10px 12px; background:#fff; font-size:15.5px;
+  transition:.15s;
+}
+.f input:focus, .f select:focus, .f textarea:focus{
+  outline:none; border-color:var(--gold-400);
+  box-shadow:0 0 0 3px rgba(203,167,92,.22);
+}
+.f textarea{min-height:78px; resize:vertical; font-family:inherit}
+.f .hint{font-size:12.5px; color:var(--ink-3); margin-top:4px}
+.row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.btn{
+  border:0; border-radius:12px; padding:12px 18px; font-weight:800; font-size:16px;
+  cursor:pointer; transition:.15s;
+}
+.btn.pri{background:var(--navy-800); color:#fff; width:100%; margin-top:6px}
+.btn.pri:hover{background:var(--navy-700)}
+.btn.pri:disabled{opacity:.55; cursor:default}
+.msg{padding:11px 14px; border-radius:10px; margin:0 0 12px; font-size:14.5px; display:none}
+.msg.ok{background:#E7F5EE; color:var(--ok); display:block}
+.msg.err{background:#FCE9E9; color:var(--bad); display:block}
+.hp{position:absolute; left:-9999px; opacity:0}
+.pane{display:none}
+.pane.on{display:block}
+footer{
+  text-align:center; margin-top:26px; padding:0 16px;
+  color:var(--ink-3); font-size:13px;
+}
+footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
+.helper{
+  background:var(--cream); border:1px dashed var(--gold-400);
+  border-radius:12px; padding:12px 14px; margin:0 0 14px;
+  font-size:14px; color:var(--ink-2);
+}
+.helper b{color:var(--navy-800)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="img/logo-wide.svg" alt='מרכז הגמ"ח · מעלה עמוס'>
+  <h1>עדכון רשימת הגמ"חים</h1>
+  <p>הוספה · תיקון · דיווח — עולה לאתר תוך יום-יומיים אחרי אישור</p>
+</header>
+
+<main>
+  <div class="tabs">
+    <button class="tab on" data-t="new">הוספת גמ"ח</button>
+    <button class="tab" data-t="fix">תיקון קיים</button>
+    <button class="tab" data-t="note">דיווח כללי</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <!-- הוספה -->
+  <section class="pane on" data-p="new">
+    <div class="card">
+      <h2>הוספת גמ"ח חדש</h2>
+      <p class="sub">מלאו כמה שיותר פרטים. שדות עם * חובה.</p>
+      <form id="fNew" autocomplete="off">
+        <input class="hp" tabindex="-1" aria-hidden="true">
+        <div class="f">
+          <label>שם הגמ"ח *</label>
+          <input name="name" required maxlength="80" placeholder='למשל: גמ"ח כבלי הנעה'>
+        </div>
+        <div class="f">
+          <label>קטגוריה</label>
+          <select name="category" id="catSel"></select>
+        </div>
+        <div class="f">
+          <label>מה יש בגמ"ח</label>
+          <textarea name="description" maxlength="400"
+            placeholder="תיאור קצר של מה שאפשר לקבל"></textarea>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label>שם המשפחה</label>
+            <input name="owner_name" maxlength="60" placeholder="משפחת…">
+          </div>
+          <div class="f">
+            <label>כתובת ביישוב</label>
+            <input name="address" maxlength="80" placeholder="רח' … 000/0">
+          </div>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label>טלפון *</label>
+            <input name="phone1" type="tel" inputmode="tel" required maxlength="15"
+              placeholder="05x-xxxxxxx">
+          </div>
+          <div class="f">
+            <label>טלפון נוסף</label>
+            <input name="phone2" type="tel" inputmode="tel" maxlength="15">
+          </div>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label>שעות</label>
+            <input name="hours" maxlength="60" placeholder="בכל שעה / בתיאום מראש">
+          </div>
+          <div class="f">
+            <label>עלות</label>
+            <input name="price" maxlength="40" placeholder="ללא תשלום / פיקדון">
+          </div>
+        </div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:14px 0 12px">
+        <div class="row">
+          <div class="f">
+            <label>השם שלכם</label>
+            <input name="rep" maxlength="50">
+          </div>
+          <div class="f">
+            <label>הטלפון שלכם</label>
+            <input name="rep_phone" type="tel" inputmode="tel" maxlength="15">
+            <div class="hint">רק כדי לחזור אליכם. לא מתפרסם.</div>
+          </div>
+        </div>
+        <button type="submit" class="btn pri">שליחה לאישור</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- תיקון -->
+  <section class="pane" data-p="fix">
+    <div class="card">
+      <h2>תיקון פרטי גמ"ח קיים</h2>
+      <p class="sub">בחרו גמ"ח מהרשימה וספרו מה צריך לתקן.</p>
+      <form id="fFix" autocomplete="off">
+        <input class="hp" tabindex="-1" aria-hidden="true">
+        <div class="f">
+          <label>איזה גמ"ח? *</label>
+          <select name="code" id="gmachSel" required>
+            <option value="">— טוען רשימה… —</option>
+          </select>
+        </div>
+        <div class="f">
+          <label>מה צריך לתקן? *</label>
+          <textarea name="what" required maxlength="500"
+            placeholder='הטלפון התחלף ל־… / הגמ"ח נסגר / עברו לכתובת אחרת / השעות השתנו'></textarea>
+        </div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:14px 0 12px">
+        <div class="row">
+          <div class="f">
+            <label>השם שלכם</label>
+            <input name="rep" maxlength="50">
+          </div>
+          <div class="f">
+            <label>הטלפון שלכם</label>
+            <input name="rep_phone" type="tel" inputmode="tel" maxlength="15">
+          </div>
+        </div>
+        <button type="submit" class="btn pri">שליחת התיקון</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- דיווח כללי -->
+  <section class="pane" data-p="note">
+    <div class="card">
+      <h2>דיווח כללי / הצעה</h2>
+      <p class="sub">משהו כללי — לא הוספה ולא תיקון של גמ"ח מסוים.</p>
+      <div class="helper">
+        לדוגמה: <b>"חסר גמ"ח X ביישוב"</b>, <b>"תוסיפו קטגוריה חדשה"</b>,
+        <b>"האתר תקוע במקום X"</b>.
+      </div>
+      <form id="fNote" autocomplete="off">
+        <input class="hp" tabindex="-1" aria-hidden="true">
+        <div class="f">
+          <label>מה רציתם לומר? *</label>
+          <textarea name="what" required maxlength="600"
+            placeholder="כתבו כאן…"></textarea>
+        </div>
+        <div class="row">
+          <div class="f">
+            <label>השם שלכם</label>
+            <input name="rep" maxlength="50">
+          </div>
+          <div class="f">
+            <label>הטלפון שלכם</label>
+            <input name="rep_phone" type="tel" inputmode="tel" maxlength="15">
+          </div>
+        </div>
+        <button type="submit" class="btn pri">שליחה</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      חוזרים לאתר הגמ"חים? <a href="./">לחצו כאן</a><br>
+      או חייגו לקו הטלפוני: <a href="tel:0772521358">077-2521358</a>
+    </p>
+  </footer>
+</main>
+
+<script src="js/config.js"></script>
+<script>
+(function(){
+  'use strict';
+  var CFG = window.CFG;
+  var H = {
+    apikey: CFG.anon,
+    Authorization: 'Bearer ' + CFG.anon,
+    'Content-Type': 'application/json'
+  };
+  function api(path, opt){
+    opt = opt || {};
+    opt.headers = H;
+    return fetch(CFG.url + '/rest/v1/' + path, opt).then(function(r){
+      if(!r.ok) return r.text().then(function(t){ throw new Error(t || r.status); });
+      return r.status === 204 ? null : r.json();
+    });
+  }
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return document.querySelectorAll(s); };
+
+  // טאבים
+  $$('.tab').forEach(function(b){
+    b.addEventListener('click', function(){
+      $$('.tab').forEach(function(x){ x.classList.remove('on'); });
+      $$('.pane').forEach(function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      document.querySelector('.pane[data-p="'+b.dataset.t+'"]').classList.add('on');
+      msg('', '');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+
+  function msg(text, kind){
+    var m = $('#msg');
+    m.textContent = text;
+    m.className = 'msg' + (kind ? ' '+kind : '');
+    if(kind === 'ok') setTimeout(function(){ m.className='msg'; }, 6000);
+  }
+
+  // טוען קטגוריות + גמ"חים
+  Promise.all([
+    api('categories?select=key,name&order=sort_order'),
+    api('gmachim?select=code,name,category&order=name')
+  ]).then(function(res){
+    var cats = res[0] || [];
+    var sel = $('#catSel');
+    sel.innerHTML = '';
+    cats.forEach(function(c){
+      var o = document.createElement('option');
+      o.value = c.key; o.textContent = c.name;
+      sel.appendChild(o);
+    });
+    var gs = res[1] || [];
+    var gsel = $('#gmachSel');
+    gsel.innerHTML = '<option value="">— בחרו גמ"ח —</option>';
+    gs.forEach(function(g){
+      var o = document.createElement('option');
+      o.value = g.code;
+      o.textContent = g.name;
+      gsel.appendChild(o);
+    });
+  }).catch(function(){
+    $('#gmachSel').innerHTML = '<option value="">— בעיה בטעינה, נסו שוב —</option>';
+  });
+
+  function send(kind, payload, rep, repPh, okText, btn){
+    btn.disabled = true;
+    return api('gmach_suggestions', {
+      method:'POST',
+      body: JSON.stringify({
+        kind: kind, payload: payload, source: 'update-page',
+        reporter_name: rep, reporter_phone: repPh
+      })
+    }).then(function(){
+      msg(okText, 'ok');
+      return true;
+    }).catch(function(){
+      msg('השליחה נכשלה. אפשר לנסות שוב, או להשאיר הודעה בקו: 077-2521358.', 'err');
+      return false;
+    }).then(function(ok){
+      btn.disabled = false;
+      return ok;
+    });
+  }
+
+  function values(form){
+    var o = {};
+    [].forEach.call(form.elements, function(el){
+      if(!el.name || el.className === 'hp') return;
+      o[el.name] = (el.value || '').trim();
+    });
+    return o;
+  }
+
+  // הוספה
+  $('#fNew').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(e.target.querySelector('.hp').value) return;
+    var v = values(e.target);
+    if(!v.name) return msg('נא למלא שם גמ"ח.', 'err');
+    if(!/\d{7,}/.test(v.phone1.replace(/\D/g,''))) return msg('נא למלא טלפון תקין.', 'err');
+    var payload = {
+      name:v.name, category:v.category, description:v.description,
+      owner_name:v.owner_name, address:v.address,
+      phone1:v.phone1, phone2:v.phone2, hours:v.hours, price:v.price
+    };
+    send('new', payload, v.rep, v.rep_phone,
+      'תודה! הגמ"ח נקלט, יעלה לאתר תוך יום-יומיים אחרי אישור.',
+      e.target.querySelector('button[type=submit]'))
+      .then(function(ok){ if(ok) e.target.reset(); });
+  });
+
+  // תיקון
+  $('#fFix').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(e.target.querySelector('.hp').value) return;
+    var v = values(e.target);
+    if(!v.code) return msg('נא לבחור איזה גמ"ח.', 'err');
+    if(!v.what) return msg('נא לכתוב מה צריך לתקן.', 'err');
+    send('fix', {code:v.code, what:v.what}, v.rep, v.rep_phone,
+      'תודה! התיקון יטופל בקרוב.',
+      e.target.querySelector('button[type=submit]'))
+      .then(function(ok){ if(ok) e.target.reset(); });
+  });
+
+  // דיווח כללי — נשלח כ-fix עם code ריק (הגבאי יראה ויטפל)
+  $('#fNote').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(e.target.querySelector('.hp').value) return;
+    var v = values(e.target);
+    if(!v.what) return msg('נא לכתוב משהו.', 'err');
+    send('fix', {code:null, what:'[דיווח כללי] '+v.what}, v.rep, v.rep_phone,
+      'תודה! הדיווח יטופל.',
+      e.target.querySelector('button[type=submit]'))
+      .then(function(ok){ if(ok) e.target.reset(); });
+  });
+})();
+</script>
+</body>
+</html>
