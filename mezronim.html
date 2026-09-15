@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>גמ"ח מזרונים · משפחת שניידר · מעלה עמוס</title>
+<meta name="theme-color" content="#12233F">
+<link rel="icon" href="img/icon-192.png">
+<style>
+:root{
+  --navy-900:#0A1729; --navy-800:#12233F; --navy-700:#1B3358;
+  --gold-500:#B08D3E; --gold-400:#CBA75C;
+  --cream:#F7F3E9; --paper:#FFFFFF;
+  --bg:#F4F0E6; --surface:#FFFFFF; --ink:#0E1D33; --ink-2:#3D4F6B; --ink-3:#6B7A91;
+  --line:#E4DCC9; --ok:#15704A; --bad:#9B2C2C; --warn:#B76F00;
+  --r:16px;
+  --sh:0 2px 6px rgba(14,29,51,.06), 0 12px 32px rgba(14,29,51,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Assistant','Segoe UI',system-ui,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); direction:rtl;
+  -webkit-font-smoothing:antialiased; line-height:1.55;
+}
+.top{
+  background:linear-gradient(180deg,var(--navy-800),var(--navy-900));
+  color:#fff; padding:26px 20px 30px; text-align:center;
+}
+.top .badge{
+  display:inline-block; background:rgba(203,167,92,.18); color:#E3C88A;
+  border:1px solid rgba(203,167,92,.4); border-radius:999px;
+  padding:4px 12px; font-size:12.5px; font-weight:700; margin-bottom:10px;
+}
+.top h1{margin:6px 0 4px; font-size:24px; letter-spacing:.2px}
+.top p{margin:0; color:#D9BE7C; font-size:15px}
+main{max-width:680px; margin:0 auto; padding:18px 16px 60px}
+
+.card{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); padding:20px 18px; box-shadow:var(--sh);
+  margin-bottom:16px;
+}
+.card h2{margin:0 0 4px; font-size:19px}
+.card .sub{margin:0 0 14px; color:var(--ink-3); font-size:14px}
+
+.items .item{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 0; border-bottom:1px dashed var(--line);
+}
+.items .item:last-child{border-bottom:0}
+.item .info{flex:1; min-width:0}
+.item .info .n{font-weight:800; font-size:16px}
+.item .info .d{color:var(--ink-3); font-size:13.5px; margin-top:2px}
+.item .info .price{color:var(--gold-500); font-weight:800; font-size:14px; margin-top:4px}
+.item .stock{
+  background:var(--cream); color:var(--navy-800); border:1px solid var(--line);
+  border-radius:10px; padding:6px 10px; font-weight:800; font-size:13px; white-space:nowrap;
+}
+.item .stock.out{background:#FCE9E9; color:var(--bad); border-color:#F0C7C7}
+
+.f{margin-bottom:12px}
+.f label{display:block; font-weight:700; font-size:14px; margin-bottom:5px; color:var(--ink-2)}
+.f input, .f select, .f textarea{
+  width:100%; border:1px solid var(--line); border-radius:10px;
+  padding:10px 12px; background:#fff; font-size:15.5px; font-family:inherit;
+}
+.f input:focus, .f select:focus, .f textarea:focus{
+  outline:none; border-color:var(--gold-400);
+  box-shadow:0 0 0 3px rgba(203,167,92,.22);
+}
+.f textarea{min-height:70px; resize:vertical}
+.row{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.qty{
+  display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px;
+  padding:10px 12px; border:1px solid var(--line); border-radius:10px;
+  margin-bottom:8px; background:#fff;
+}
+.qty .n{font-weight:700}
+.qty input[type=number]{width:70px; text-align:center}
+.btn{
+  border:0; border-radius:12px; padding:12px 18px; font-weight:800; font-size:16px;
+  cursor:pointer; transition:.15s;
+}
+.btn.pri{background:var(--navy-800); color:#fff; width:100%; margin-top:6px}
+.btn.pri:hover{background:var(--navy-700)}
+.btn.pri:disabled{opacity:.55; cursor:default}
+.btn.ghost{background:#fff; color:var(--navy-800); border:1px solid var(--line)}
+.btn.small{padding:6px 12px; font-size:13.5px}
+.btn.danger{background:var(--bad); color:#fff}
+.msg{padding:11px 14px; border-radius:10px; margin:0 0 12px; font-size:14.5px; display:none}
+.msg.ok{background:#E7F5EE; color:var(--ok); display:block}
+.msg.err{background:#FCE9E9; color:var(--bad); display:block}
+.hp{position:absolute; left:-9999px; opacity:0}
+
+footer{
+  text-align:center; margin-top:20px; padding:0 16px;
+  color:var(--ink-3); font-size:13px;
+}
+footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
+
+/* Admin */
+.admin-bar{
+  background:var(--navy-800); color:#fff; padding:10px 16px;
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  font-size:13.5px; font-weight:700;
+}
+.admin-bar .out{background:#fff; color:var(--navy-800); border-radius:8px;
+  padding:5px 12px; text-decoration:none; font-size:13px}
+.admin-card{border-color:var(--gold-400); box-shadow:0 0 0 2px rgba(203,167,92,.15)}
+.admin-item{
+  border:1px solid var(--line); border-radius:12px; padding:12px;
+  background:#FFFDF7; margin-bottom:10px;
+}
+.admin-item input, .admin-item textarea{margin-bottom:6px}
+.admin-item .toolbar{display:flex; gap:8px; margin-top:6px}
+.order{
+  border:1px solid var(--line); border-radius:12px; padding:12px;
+  background:#fff; margin-bottom:10px;
+}
+.order .head{display:flex; justify-content:space-between; gap:10px; margin-bottom:6px}
+.order .name{font-weight:800}
+.order .status{font-size:12.5px; padding:2px 8px; border-radius:999px; background:var(--cream); border:1px solid var(--line)}
+.order .status.new{background:#FFF3C7; border-color:#F0DC94; color:#7A5A00}
+.order .status.confirmed{background:#DEEBFF; border-color:#B5CFF0; color:#194E9B}
+.order .status.done{background:#E7F5EE; color:var(--ok)}
+.order .status.cancelled{background:#FCE9E9; color:var(--bad)}
+.order .meta{color:var(--ink-3); font-size:13px}
+.order ul{margin:6px 0; padding-right:18px}
+.order .actions{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap}
+
+.spinner{display:inline-block; width:16px; height:16px; border:2px solid #ccc; border-top-color:var(--navy-800); border-radius:50%; animation:sp 1s linear infinite; vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="adminBar" class="admin-bar" style="display:none">
+  <span>◆ מצב עריכה — יוסף שניידר</span>
+  <a href="mezronim.html" class="out">יציאה מעריכה</a>
+</div>
+
+<header class="top">
+  <span class="badge">גמ"ח קוד 150</span>
+  <h1>גמ"ח מזרונים ומיטות מתקפלות</h1>
+  <p>משפחת שניידר · מעלה עמוס</p>
+</header>
+
+<main>
+  <div class="msg" id="msg"></div>
+
+  <!-- תצוגה ציבורית -->
+  <section id="publicView">
+    <div class="card">
+      <h2>מה יש בגמ"ח</h2>
+      <p class="sub">בחרו כמות ולחצו "שליחת הזמנה" למטה. נחזור אליכם לתיאום.</p>
+      <div class="items" id="itemsList">
+        <div style="text-align:center; padding:20px"><span class="spinner"></span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>שליחת הזמנה</h2>
+      <p class="sub">מלאו פרטים. עלינו לחזור אליכם לתיאום איסוף והחזרה.</p>
+      <form id="fOrder" autocomplete="off">
+        <input class="hp" tabindex="-1" aria-hidden="true">
+        <div id="qtyBox"></div>
+        <div class="row">
+          <div class="f"><label>שם מלא *</label>
+            <input name="customer_name" required maxlength="60"></div>
+          <div class="f"><label>טלפון *</label>
+            <input name="customer_phone" type="tel" inputmode="tel" required maxlength="15" placeholder="05x-xxxxxxx"></div>
+        </div>
+        <div class="f"><label>כתובת ביישוב</label>
+          <input name="address" maxlength="80" placeholder="רח' ... 000"></div>
+        <div class="row">
+          <div class="f"><label>תאריך שצריך</label>
+            <input name="need_date" type="date"></div>
+          <div class="f"><label>תאריך החזרה</label>
+            <input name="return_date" type="date"></div>
+        </div>
+        <div class="f"><label>הערות</label>
+          <textarea name="notes" maxlength="500" placeholder="אירוע / כמה אורחים / העדפות"></textarea></div>
+        <button type="submit" class="btn pri">שליחת הזמנה</button>
+      </form>
+    </div>
+
+    <div class="card" style="text-align:center">
+      <p style="margin:0 0 6px; color:var(--ink-2)">רוצים לדבר בטלפון?</p>
+      <p style="margin:0"><a href="tel:0533177636" style="font-size:19px; font-weight:800; color:var(--navy-800); text-decoration:none">053-3177636</a></p>
+    </div>
+  </section>
+
+  <!-- אדמין -->
+  <section id="adminView" style="display:none">
+    <div class="card admin-card">
+      <h2>עריכת פריטים</h2>
+      <p class="sub">כאן אתה מגדיר את הפריטים שאנשים רואים ומזמינים. המחירים והכמויות מתעדכנים מיד.</p>
+      <div id="adminItems"></div>
+      <button class="btn ghost small" id="btnAddItem">+ הוספת פריט</button>
+    </div>
+
+    <div class="card admin-card">
+      <h2>הזמנות</h2>
+      <p class="sub" id="ordersSub">טוען...</p>
+      <div id="ordersList"></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      חוזרים לאתר מרכז הגמ"חים? <a href="./">לחצו כאן</a>
+    </p>
+  </footer>
+</main>
+
+<script src="js/config.js"></script>
+<script>
+(function(){
+  'use strict';
+  var CFG = window.CFG;
+  var H = {
+    apikey: CFG.anon,
+    Authorization: 'Bearer ' + CFG.anon,
+    'Content-Type': 'application/json'
+  };
+  var $ = function(s){ return document.querySelector(s); };
+  var qs = new URLSearchParams(location.search);
+  var adminToken = qs.get('admin') || '';
+  var isAdmin = false;
+
+  function api(path, opt){
+    opt = opt || {};
+    opt.headers = Object.assign({}, H, opt.headers || {});
+    return fetch(CFG.url + '/rest/v1/' + path, opt).then(function(r){
+      if(!r.ok) return r.text().then(function(t){ throw new Error(t || r.status); });
+      return r.status === 204 ? null : r.json();
+    });
+  }
+  function rpc(fn, body){
+    return fetch(CFG.url + '/rest/v1/rpc/' + fn, {
+      method:'POST', headers: H, body: JSON.stringify(body||{})
+    }).then(function(r){
+      if(!r.ok) return r.text().then(function(t){ throw new Error(t || r.status); });
+      return r.status === 204 ? null : r.json();
+    });
+  }
+  function msg(text, kind){
+    var m = $('#msg');
+    m.textContent = text;
+    m.className = 'msg' + (kind ? ' '+kind : '');
+    if(kind === 'ok') setTimeout(function(){ m.className='msg'; }, 6000);
+    if(text) window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // -------- PUBLIC -------
+  function renderPublicItems(items){
+    var box = $('#itemsList');
+    var qb = $('#qtyBox');
+    box.innerHTML = '';
+    qb.innerHTML = '';
+    if(!items.length){
+      box.innerHTML = '<p class="sub" style="text-align:center; padding:20px">אין כרגע פריטים זמינים.</p>';
+      return;
+    }
+    items.forEach(function(it){
+      // כרטיס תצוגה
+      var d = document.createElement('div');
+      d.className = 'item';
+      var stockCls = it.stock > 0 ? '' : 'out';
+      var stockTxt = it.stock > 0 ? ('זמין: ' + it.stock) : 'לא זמין';
+      d.innerHTML =
+        '<div class="info">' +
+          '<div class="n"></div>' +
+          '<div class="d"></div>' +
+          '<div class="price"></div>' +
+        '</div>' +
+        '<div class="stock ' + stockCls + '"></div>';
+      d.querySelector('.n').textContent = it.name;
+      d.querySelector('.d').textContent = it.description || '';
+      d.querySelector('.price').textContent = it.price_text || '';
+      d.querySelector('.stock').textContent = stockTxt;
+      box.appendChild(d);
+
+      // שדה כמות בטופס
+      if(it.stock > 0){
+        var q = document.createElement('div');
+        q.className = 'qty';
+        q.innerHTML =
+          '<div><div class="n"></div><div class="d" style="color:var(--ink-3); font-size:13px"></div></div>' +
+          '<input type="number" min="0" max="' + it.stock + '" value="0" data-id="' + it.id + '" data-name="' + it.name.replace(/"/g,'&quot;') + '">';
+        q.querySelector('.n').textContent = it.name;
+        q.querySelector('.d').textContent = 'עד ' + it.stock + ' יחידות · ' + (it.price_text || '');
+        qb.appendChild(q);
+      }
+    });
+  }
+
+  function loadPublic(){
+    api('mezronim_items?select=id,name,description,price_text,stock,sort_order&order=sort_order,id').then(renderPublicItems);
+  }
+
+  $('#fOrder').addEventListener('submit', function(e){
+    e.preventDefault();
+    if(e.target.querySelector('.hp').value) return;
+    var f = e.target;
+    var name = f.customer_name.value.trim();
+    var phone = f.customer_phone.value.trim();
+    if(!name || !/\d{7,}/.test(phone.replace(/\D/g,''))){
+      return msg('נא למלא שם וטלפון תקין.', 'err');
+    }
+    var items = [];
+    document.querySelectorAll('#qtyBox input[type=number]').forEach(function(inp){
+      var n = parseInt(inp.value||'0', 10);
+      if(n > 0) items.push({item_id: parseInt(inp.dataset.id,10), name: inp.dataset.name, qty: n});
+    });
+    if(!items.length) return msg('נא לבחור לפחות פריט אחד.', 'err');
+
+    var btn = f.querySelector('button[type=submit]');
+    btn.disabled = true;
+    api('mezronim_orders', {
+      method:'POST',
+      body: JSON.stringify({
+        customer_name:name, customer_phone:phone,
+        address: f.address.value.trim(),
+        need_date: f.need_date.value || null,
+        return_date: f.return_date.value || null,
+        items: items,
+        notes: f.notes.value.trim()
+      })
+    }).then(function(){
+      msg('תודה! ההזמנה התקבלה. נחזור אליכם לתיאום.', 'ok');
+      f.reset();
+    }).catch(function(err){
+      msg('השליחה נכשלה. נסו שוב, או חייגו 053-3177636.', 'err');
+    }).then(function(){ btn.disabled = false; });
+  });
+
+  // -------- ADMIN --------
+  function checkAdmin(){
+    return rpc('mezronim_admin_check', {t: adminToken}).then(function(r){
+      return !!r;
+    });
+  }
+
+  function adminItemRow(it){
+    var w = document.createElement('div');
+    w.className = 'admin-item';
+    w.dataset.id = it.id || 0;
+    w.innerHTML =
+      '<div class="row">' +
+        '<div class="f"><label>שם</label><input class="a-name" maxlength="60" value=""></div>' +
+        '<div class="f"><label>מחיר (טקסט)</label><input class="a-price" maxlength="60" value=""></div>' +
+      '</div>' +
+      '<div class="f"><label>תיאור</label><textarea class="a-desc" maxlength="300"></textarea></div>' +
+      '<div class="row">' +
+        '<div class="f"><label>כמות</label><input class="a-stock" type="number" min="0" value="0"></div>' +
+        '<div class="f"><label>סדר תצוגה</label><input class="a-sort" type="number" value="100"></div>' +
+      '</div>' +
+      '<div class="f"><label><input class="a-active" type="checkbox"> פעיל (יופיע לציבור)</label></div>' +
+      '<div class="toolbar">' +
+        '<button type="button" class="btn small pri a-save">שמירה</button>' +
+        '<button type="button" class="btn small danger a-del">מחיקה</button>' +
+      '</div>';
+    w.querySelector('.a-name').value = it.name || '';
+    w.querySelector('.a-price').value = it.price_text || '';
+    w.querySelector('.a-desc').value = it.description || '';
+    w.querySelector('.a-stock').value = it.stock || 0;
+    w.querySelector('.a-sort').value = it.sort_order || 100;
+    w.querySelector('.a-active').checked = it.is_active !== false;
+
+    w.querySelector('.a-save').addEventListener('click', function(){
+      var payload = {
+        t: adminToken,
+        p_id: parseInt(w.dataset.id, 10) || null,
+        p_name: w.querySelector('.a-name').value.trim(),
+        p_description: w.querySelector('.a-desc').value.trim(),
+        p_price_text: w.querySelector('.a-price').value.trim(),
+        p_stock: parseInt(w.querySelector('.a-stock').value, 10) || 0,
+        p_is_active: !!w.querySelector('.a-active').checked,
+        p_sort_order: parseInt(w.querySelector('.a-sort').value, 10) || 100
+      };
+      if(!payload.p_name) return msg('חסר שם.', 'err');
+      rpc('mezronim_admin_upsert_item', payload).then(function(id){
+        w.dataset.id = id;
+        msg('נשמר.', 'ok');
+        loadAdminItems();
+      }).catch(function(){ msg('שמירה נכשלה.', 'err'); });
+    });
+
+    w.querySelector('.a-del').addEventListener('click', function(){
+      var id = parseInt(w.dataset.id, 10);
+      if(!id){ w.remove(); return; }
+      if(!confirm('למחוק את הפריט "'+ w.querySelector('.a-name').value +'"?')) return;
+      rpc('mezronim_admin_delete_item', {t: adminToken, p_id: id}).then(function(){
+        msg('נמחק.', 'ok');
+        loadAdminItems();
+      }).catch(function(){ msg('מחיקה נכשלה.', 'err'); });
+    });
+
+    return w;
+  }
+
+  function loadAdminItems(){
+    rpc('mezronim_admin_items', {t: adminToken}).then(function(items){
+      var box = $('#adminItems');
+      box.innerHTML = '';
+      (items||[]).forEach(function(it){ box.appendChild(adminItemRow(it)); });
+    });
+  }
+
+  function loadAdminOrders(){
+    rpc('mezronim_admin_orders', {t: adminToken}).then(function(orders){
+      var box = $('#ordersList');
+      var sub = $('#ordersSub');
+      box.innerHTML = '';
+      if(!orders || !orders.length){
+        sub.textContent = 'אין עדיין הזמנות.';
+        return;
+      }
+      sub.textContent = orders.length + ' הזמנות (חדשות למעלה).';
+      orders.forEach(function(o){
+        var d = document.createElement('div');
+        d.className = 'order';
+        var items = (o.items || []).map(function(x){ return '<li>' + x.qty + ' × ' + x.name + '</li>'; }).join('');
+        var when = new Date(o.created_at).toLocaleString('he-IL');
+        d.innerHTML =
+          '<div class="head">' +
+            '<div><div class="name"></div><div class="meta"></div></div>' +
+            '<div class="status ' + o.status + '"></div>' +
+          '</div>' +
+          '<ul></ul>' +
+          '<div class="meta needs"></div>' +
+          '<div class="meta notes"></div>' +
+          '<div class="actions">' +
+            '<button class="btn small ghost a-confirm">אישרתי</button>' +
+            '<button class="btn small pri a-done">בוצע</button>' +
+            '<button class="btn small danger a-cancel">בוטל</button>' +
+          '</div>';
+        d.querySelector('.name').textContent = o.customer_name + ' · ' + o.customer_phone;
+        d.querySelector('.meta').textContent = when + (o.address ? ' · ' + o.address : '');
+        d.querySelector('.status').textContent = ({
+          new:'חדש', confirmed:'אושר', done:'בוצע', cancelled:'בוטל'
+        })[o.status] || o.status;
+        d.querySelector('ul').innerHTML = items;
+        var needs = [];
+        if(o.need_date) needs.push('לתאריך: ' + o.need_date);
+        if(o.return_date) needs.push('מחזירים: ' + o.return_date);
+        d.querySelector('.needs').textContent = needs.join(' · ');
+        d.querySelector('.notes').textContent = o.notes || '';
+
+        function set(status){
+          rpc('mezronim_admin_set_order_status', {t: adminToken, p_id: o.id, p_status: status, p_note: null})
+            .then(loadAdminOrders).catch(function(){ msg('עדכון נכשל.', 'err'); });
+        }
+        d.querySelector('.a-confirm').addEventListener('click', function(){ set('confirmed'); });
+        d.querySelector('.a-done').addEventListener('click', function(){ set('done'); });
+        d.querySelector('.a-cancel').addEventListener('click', function(){ if(confirm('לבטל?')) set('cancelled'); });
+        box.appendChild(d);
+      });
+    });
+  }
+
+  $('#btnAddItem').addEventListener('click', function(){
+    $('#adminItems').appendChild(adminItemRow({id:0, name:'', description:'', price_text:'', stock:0, sort_order:100, is_active:true}));
+  });
+
+  // -------- BOOT --------
+  if(adminToken){
+    checkAdmin().then(function(ok){
+      if(!ok){
+        msg('הקישור אינו תקף.', 'err');
+        loadPublic();
+        return;
+      }
+      isAdmin = true;
+      $('#adminBar').style.display = 'flex';
+      $('#publicView').style.display = 'none';
+      $('#adminView').style.display = 'block';
+      loadAdminItems();
+      loadAdminOrders();
+      setInterval(loadAdminOrders, 30000);
+    }).catch(function(){
+      msg('בעיה בבדיקת ההרשאה.', 'err');
+      loadPublic();
+    });
+  } else {
+    loadPublic();
+  }
+})();
+</script>
+</body>
+</html>
