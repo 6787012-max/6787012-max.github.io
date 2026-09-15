@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>גמ"ח מזרונים · משפחת שניידר · מעלה עמוס</title>
+<title>רכישת מזרונים ומיטות מתקפלות · מעלה עמוס</title>
 <meta name="theme-color" content="#12233F">
 <link rel="icon" href="img/icon-192.png">
 <style>
@@ -143,9 +143,9 @@ footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
 </div>
 
 <header class="top">
-  <span class="badge">גמ"ח קוד 150</span>
-  <h1>גמ"ח מזרונים ומיטות מתקפלות</h1>
-  <p>משפחת שניידר · מעלה עמוס</p>
+  <span class="badge">רכישה חד-פעמית</span>
+  <h1>רכישת מזרונים ומיטות מתקפלות</h1>
+  <p>קהילת מעלה עמוס</p>
 </header>
 
 <main>
@@ -154,8 +154,8 @@ footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
   <!-- תצוגה ציבורית -->
   <section id="publicView">
     <div class="card">
-      <h2>מה יש בגמ"ח</h2>
-      <p class="sub">בחרו כמות ולחצו "שליחת הזמנה" למטה. נחזור אליכם לתיאום.</p>
+      <h2>הפריטים למכירה</h2>
+      <p class="sub">בחרו כמות ולחצו "שליחת הזמנה" למטה. נחזור אליכם לתיאום איסוף ותשלום.</p>
       <div class="items" id="itemsList">
         <div style="text-align:center; padding:20px"><span class="spinner"></span></div>
       </div>
@@ -163,7 +163,7 @@ footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
 
     <div class="card">
       <h2>שליחת הזמנה</h2>
-      <p class="sub">מלאו פרטים. עלינו לחזור אליכם לתיאום איסוף והחזרה.</p>
+      <p class="sub">מלאו פרטים ונחזור אליכם לתיאום איסוף ותשלום.</p>
       <form id="fOrder" autocomplete="off">
         <input class="hp" tabindex="-1" aria-hidden="true">
         <div id="qtyBox"></div>
@@ -175,14 +175,8 @@ footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
         </div>
         <div class="f"><label>כתובת ביישוב</label>
           <input name="address" maxlength="80" placeholder="רח' ... 000"></div>
-        <div class="row">
-          <div class="f"><label>תאריך שצריך</label>
-            <input name="need_date" type="date"></div>
-          <div class="f"><label>תאריך החזרה</label>
-            <input name="return_date" type="date"></div>
-        </div>
         <div class="f"><label>הערות</label>
-          <textarea name="notes" maxlength="500" placeholder="אירוע / כמה אורחים / העדפות"></textarea></div>
+          <textarea name="notes" maxlength="500" placeholder="פרטים נוספים / העדפות"></textarea></div>
         <button type="submit" class="btn pri">שליחת הזמנה</button>
       </form>
     </div>
@@ -325,8 +319,6 @@ footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
       body: JSON.stringify({
         customer_name:name, customer_phone:phone,
         address: f.address.value.trim(),
-        need_date: f.need_date.value || null,
-        return_date: f.return_date.value || null,
         items: items,
         notes: f.notes.value.trim()
       })
@@ -445,10 +437,7 @@ footer a{color:var(--navy-700); text-decoration:none; font-weight:700}
           new:'חדש', confirmed:'אושר', done:'בוצע', cancelled:'בוטל'
         })[o.status] || o.status;
         d.querySelector('ul').innerHTML = items;
-        var needs = [];
-        if(o.need_date) needs.push('לתאריך: ' + o.need_date);
-        if(o.return_date) needs.push('מחזירים: ' + o.return_date);
-        d.querySelector('.needs').textContent = needs.join(' · ');
+        d.querySelector('.needs').textContent = '';
         d.querySelector('.notes').textContent = o.notes || '';
 
         function set(status){
