@@ -137,10 +137,74 @@
           esc(catName(g.category)) + '</td><td>' + esc(g.owner_name || '') + '</td><td>' +
           esc(g.phone1 || '—') + '</td><td>' +
           (g.is_wanted ? 'מבוקש' : g.status === 'approved' ? 'פעיל' : esc(g.status)) +
-          '</td><td><button class="btn sm js-hide" data-id="' + g.id + '" data-s="' +
+          '</td><td>' +
+          '<button class="btn sm js-edit" data-id="' + g.id + '">ערוך</button> ' +
+          '<button class="btn sm js-hide" data-id="' + g.id + '" data-s="' +
           (g.status === 'approved' ? 'hidden' : 'approved') + '">' +
           (g.status === 'approved' ? 'הסתר' : 'הפעל') + '</button></td></tr>';
       }).join('') + '</tbody></table></div>';
+  }
+
+  function openEdit(id) {
+    var g = DATA.gm.filter(function (x) { return x.id === +id; })[0];
+    if (!g) return;
+    var catOpts = DATA.cats.map(function (c) {
+      return '<option value="' + esc(c.key) + '"' +
+        (c.key === g.category ? ' selected' : '') + '>' + esc(c.name) + '</option>';
+    }).join('');
+    var fieldsHTML = '';
+    var fields = [
+      ['name', 'שם', 'input'], ['owner_name', 'אצל', 'input'],
+      ['phone1', 'טלפון', 'input'], ['phone2', 'טלפון 2', 'input'],
+      ['address', 'כתובת', 'input'], ['hours', 'שעות', 'input'],
+      ['price', 'עלות', 'input'], ['description', 'תיאור', 'textarea'],
+      ['notes', 'הערות פנימיות', 'textarea']
+    ];
+    fields.forEach(function (r) {
+      var val = g[r[0]] || '';
+      fieldsHTML += '<div class="f"><label>' + r[1] + '</label>';
+      if (r[2] === 'textarea') {
+        fieldsHTML += '<textarea data-k="' + r[0] + '" rows="3">' + esc(val) + '</textarea>';
+      } else {
+        fieldsHTML += '<input data-k="' + r[0] + '" type="text" value="' + esc(val) + '">';
+      }
+      fieldsHTML += '</div>';
+    });
+    var html = '<div id="editOv" class="ov on" style="position:fixed;inset:0;' +
+      'background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;' +
+      'justify-content:center;padding:14px;overflow:auto">' +
+      '<div style="background:#fff;border-radius:14px;max-width:520px;width:100%;' +
+      'padding:22px;max-height:92vh;overflow:auto">' +
+      '<h3 style="margin:0 0 12px">עריכת גמ"ח · ' + esc(g.name) + '</h3>' +
+      '<div class="f"><label>קטגוריה</label>' +
+      '<select data-k="category">' + catOpts + '</select></div>' +
+      fieldsHTML +
+      '<div class="acts" style="margin-top:16px;display:flex;gap:10px">' +
+      '<button class="btn pri" id="edSave">שמור שינויים</button>' +
+      '<button class="btn ghost" id="edCancel">ביטול</button>' +
+      '</div><div class="msg" id="edMsg"></div></div></div>';
+    var wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    document.body.appendChild(wrap.firstChild);
+    var close = function () { var o = $('editOv'); if (o) o.parentNode.removeChild(o); };
+    $('edCancel').onclick = close;
+    $('edSave').onclick = function () {
+      var body = {};
+      [].forEach.call(document.querySelectorAll('#editOv [data-k]'), function (el) {
+        body[el.dataset.k] = el.value.trim();
+      });
+      $('edSave').disabled = true;
+      api('gmachim?id=eq.' + g.id, { method: 'PATCH', body: JSON.stringify(body) })
+        .then(function (r) {
+          if (!r || !r.length) throw new Error('לא עודכנה שורה — בדוק הרשאות');
+          close(); load();
+        })
+        .catch(function (e) {
+          $('edMsg').textContent = 'שגיאה: ' + e.message;
+          $('edMsg').className = 'msg err';
+          $('edSave').disabled = false;
+        });
+    };
   }
   function catName(k) {
     var c = DATA.cats.filter(function (x) { return x.key === k; })[0];
@@ -257,6 +321,8 @@
     b.classList.add('on'); T = b.dataset.t; draw();
   });
   document.addEventListener('click', function (e) {
+    var edit = e.target.closest && e.target.closest('.js-edit');
+    if (edit) { openEdit(edit.dataset.id); return; }
     var t = e.target;
     if (t.classList.contains('js-ok')) return approve(t.dataset.id);
     if (t.classList.contains('js-done')) return mark(t.dataset.id, 'done', 'טופל ידנית').then(load);

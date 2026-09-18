@@ -28,7 +28,8 @@
     opt.headers = H;
     return fetch(CFG.url + '/rest/v1/' + path, opt).then(function (r) {
       if (!r.ok) return r.text().then(function (t) { throw new Error(t || r.status); });
-      return r.status === 204 ? null : r.json();
+      if (r.status === 204) return null;
+      return r.text().then(function (t) { return t ? JSON.parse(t) : null; });
     });
   }
 
@@ -411,6 +412,9 @@
     var p = new URLSearchParams(location.search);
     if (p.get('q')) { S.q = p.get('q'); $('q').value = S.q; $('clearq').style.display = 'block'; }
     if (p.get('c')) S.cat = p.get('c');
+    if (p.get('add') === '1') {
+      setTimeout(function () { openModal('new'); }, 250);
+    }
   }
 
   wire(); theme(); fromUrl(); boot();
